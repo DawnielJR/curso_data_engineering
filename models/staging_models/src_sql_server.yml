@@ -12,7 +12,7 @@ sources:
       identifier: false
 
     freshness:
-      warn_after: {count: 24, period: hour}
+      warn_after: {count: 5, period: day}
       error_after: {count: 10, period: day}
 
     tables:
