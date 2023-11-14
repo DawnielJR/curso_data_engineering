@@ -12,17 +12,17 @@ WITH src_users AS (
 
 stg_users AS (
     SELECT
-        user_id::VARCHAR(256) ,
-        updated_at::TIMESTAMP_TZ(9) ,
-        address_id::VARCHAR(256) ,
-        last_name::VARCHAR(256) ,
-        created_at::TIMESTAMP_TZ(9) ,
-        phone_number::VARCHAR(40) ,
-        total_orders::NUMBER(38,0) ,
-        first_name::VARCHAR(60) ,
-        email::VARCHAR(256) ,
-        _fivetran_deleted::BOOLEAN,
-        _fivetran_synced::TIMESTAMP_TZ (9) AS date_load
+        user_id ,
+        updated_at ,
+        address_id ,
+        last_name ,
+        created_at ,
+        phone_number ,
+        total_orders ,
+        first_name ,
+        email ,
+        _fivetran_deleted,
+        _fivetran_synced AS date_load
     FROM src_users
     )
 
