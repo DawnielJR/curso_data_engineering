@@ -3,6 +3,8 @@ version: 2
 sources:
 
   - name: sql_server_dbo # name of the source 
+    description: >
+      raw data
     schema: sql_server_dbo # this is the schema our raw data lives in
     database: ALUMNO17_DEV_BRONZE_DB # this is the name of our database
 
@@ -19,33 +21,71 @@ sources:
 
       - name: addresses
         loaded_at_field: _fivetran_synced
+        description: >
+          Address info for each customer  
         columns:
           - name: zipcode
+            description: >
+              zipcode number for each customer address
           - name: country
+            description: >
+              Country for each customer address
           - name: address
+            description: >
+              Exact address for each customer
           - name: state
+            description: >
+              State for each customer address
           - name: _fivetran_deleted
+            description: >
+              Date that the data was deleted
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded
 
         
         
       - name: events
         loaded_at_field: _fivetran_synced
+        description: >
+          represents customer traceability on the web.
         columns:
           - name: event_id
+            description: >
+              ID for each event 
           - name: page_url
+            description: >
+              url of the website where customers browse
           - name: event_type
+            description: >
+              represents the type of event that records the user, whether he/she exits the site, buys, watches, etc.
           - name: user_id
+            description: >
+              Customer ID
           - name: product_id
+            description: >
+              product that the customer purchased.
           - name: session_id
+            description: >
+              Represent the id for each customer connection to web
           - name: created_at
+            description: >
+              date on which the customer registered on the website
           - name: order_id
+            description: >
+              id representing the customer's order
           - name: _fivetran_deleted
+            description: >
+              Date that the data was deleted
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded
 
 
       - name: orders
         loaded_at_field: _fivetran_synced
+        description: >
+          Raw data for orders per customers
         columns:
           - name: order_id
           - name: shipping_service
