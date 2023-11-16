@@ -13,7 +13,7 @@ with src_budget as (
 stg_budget as (
 
     select
-        _row,
+        _row as budget_id ,
         product_id,
         quantity,
         month,

@@ -17,8 +17,8 @@ stg_promos as (
     select
         promo_id,
         discount,
-        status,
-        _fivetran_deleted,
+        status as promo_status,
+        _fivetran_deleted as date_deleted,
         _fivetran_synced as date_load
 
     from src_promos

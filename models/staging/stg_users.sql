@@ -21,7 +21,7 @@ stg_users AS (
         total_orders ,
         first_name ,
         email ,
-        _fivetran_deleted,
+        _fivetran_deleted as date_deleted,
         _fivetran_synced AS date_load
     FROM src_users
     )

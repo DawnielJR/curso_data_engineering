@@ -1,6 +1,6 @@
-WITH stg_users AS (
+WITH int_addresses_users AS (
     SELECT * 
-    FROM {{ ref('stg_users') }}
+    FROM {{ ref('int_addresses_users') }}
     ),
     stg_orders AS (
     SELECT *
