@@ -18,7 +18,6 @@ stg_addresses as (
         country,
         address,
         state,
-        _fivetran_deleted as date_deleted,
         _fivetran_synced as date_load
 
     from src_addresses

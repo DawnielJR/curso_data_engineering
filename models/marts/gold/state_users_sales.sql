@@ -21,12 +21,12 @@ state_users_sales AS (
         SUM(c.order_total) as total_import ,
         d.discount 
     FROM stg_addresses a
-    INNER JOIN stg_users b
+    FULL OUTER JOIN stg_users b
         ON a.address_id = b.address_id
-    INNER JOIN stg_orders c
+    FULL OUTER JOIN stg_orders c
         ON b.user_id = c.user_id
-    INNER JOIN stg_promos d
-        ON c.promo_id = d.promo_id
+    FULL OUTER JOIN stg_promos d
+        ON c.promo_id = d.promo_id_subrogated
     GROUP BY b.first_name , b.last_name , d.discount
     ORDER BY total_import DESC
     )

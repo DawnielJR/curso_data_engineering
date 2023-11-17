@@ -18,7 +18,6 @@ stg_products as (
         price,
         name,
         inventory,
-        _fivetran_deleted,
         _fivetran_synced as date_load
 
     from src_products

@@ -25,7 +25,6 @@ stg_orders as (
         delivered_at,
         tracking_id,
         status as order_status,
-        _fivetran_deleted as date_deleted,
         _fivetran_synced as date_load
 
     from src_orders

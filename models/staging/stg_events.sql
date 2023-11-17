@@ -21,7 +21,6 @@ stg_events as (
         session_id,
         created_at,
         order_id,
-        _fivetran_deleted as date_deleted,
         _fivetran_synced as date_load
 
     from src_events

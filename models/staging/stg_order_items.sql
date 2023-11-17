@@ -17,7 +17,6 @@ stg_order_items as (
         order_id,
         product_id,
         quantity,
-        _fivetran_deleted as date_deleted,
         _fivetran_synced as date_load
 
     from src_order_items

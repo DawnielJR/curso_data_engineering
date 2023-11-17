@@ -46,40 +46,51 @@ sources:
         
         
       - name: events
-        loaded_at_field: _fivetran_synced
         description: >
-          represents customer traceability on the web.
+          Data about events in the platform of demo.
         columns:
           - name: event_id
             description: >
-              ID for each event 
-          - name: page_url
-            description: >
-              url of the website where customers browse
-          - name: event_type
-            description: >
-              represents the type of event that records the user, whether he/she exits the site, buys, watches, etc.
-          - name: user_id
-            description: >
-              Customer ID
-          - name: product_id
-            description: >
-              product that the customer purchased.
+              UUID of each unique event on the platform.
+            tests:
+              - not_null
+              - unique
           - name: session_id
             description: >
-              Represent the id for each customer connection to web
+              UUID of each browsing session on the platform which can contain many events.
+            tests:
+              - not_null
+          - name: user_id
+            description: >
+              UUID of the user that this event is associated with.
+            tests:
+              - not_null
+          - name: page_url
+            description: >
+              URL that the event happened on.
+            tests:
+              - not_null
           - name: created_at
             description: >
-              date on which the customer registered on the website
+              Timestamp of the event (UTC).
+            tests:
+              - not_null
+          - name: event_type
+            description: >
+              Type of event.
+            tests:
+              - not_null
           - name: order_id
             description: >
-              id representing the customer's order
-          - name: _fivetran_deleted
+              If the event is specific to an order (mostly used for checkout).
+          - name: product_id
             description: >
-              Date that the data was deleted
+              If the event is specific to a product.
           - name: _fivetran_synced
             description: >
-              Date that the data was loaded
+              Date that the data was loaded.
+            tests:
+              - not_null
 
 
       - name: orders
