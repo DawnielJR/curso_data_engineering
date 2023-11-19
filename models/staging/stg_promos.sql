@@ -1,7 +1,11 @@
 {{ config(
-    materialized='table',
-    unique_key='promo_id_subrogated'
+  materialized='table',
+  unique_key='promo_id_subrogated',
+  relationships={
+    'promo_id_subrogated': 'promos.promo_id'
+  }
 ) }}
+
 
 with src_promos as (
     select * from {{ source('sql_server_dbo', 'promos') }}

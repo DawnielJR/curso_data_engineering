@@ -2,10 +2,6 @@ WITH int_addresses_users AS (
     SELECT * 
     FROM {{ ref('int_addresses_users') }}
     ),
-    stg_addresses AS (
-    SELECT *
-    FROM {{ ref('stg_addresses') }}
-    ),
     stg_orders AS (
     SELECT *
     FROM {{ ref('stg_orders') }}
@@ -14,13 +10,11 @@ WITH int_addresses_users AS (
 state_deliveries AS (
     SELECT
         COUNT (a.order_id) as delivery_number,
-        b.state
+        c.state
     FROM stg_orders a
-    INNER JOIN stg_users c
+    INNER JOIN int_addresses_users c
         ON c.user_id = a.user_id
-    INNER JOIN stg_addresses b
-        ON b.address_id = c.address_id
-    GROUP BY b.state
+    GROUP BY c.state
     )
 
 SELECT * FROM state_deliveries

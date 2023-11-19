@@ -19,6 +19,7 @@ addresses_users AS (
         , s.country
         , s.address
         , s.state
+        , CONCAT(s.zipcode, ', ', s.country, ', ', s.address, ', ', s.state) AS full_address
     FROM stg_users p
     INNER JOIN stg_addresses s
     ON s.address_id = p.address_id
