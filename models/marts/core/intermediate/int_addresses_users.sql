@@ -14,10 +14,7 @@ addresses_users AS (
         , p.last_name
         , p.email
         , p.phone_number
-        , p.created_at
-        , p.updated_at
         , p.address_id
-        , p.date_load
         , s.zipcode
         , s.country
         , s.address
