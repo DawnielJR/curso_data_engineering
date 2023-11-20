@@ -1,0 +1,28 @@
+version: 2
+
+models:
+
+      - name: stg_promos
+        description: >
+          All info about promo table
+        columns:
+          - name: promo_id
+            description: >
+              Represent the Promo id was changed to promo_type
+          - name: discount
+            description: >
+              Discount for each product
+          - name: status
+            description: >
+              Represent the status for promos, active or inactive was changed to status_promo
+          - name: promo_sk
+            description: >
+              Surrogated key for promo table
+            tests: 
+              - unique
+              - relationships:
+                  field: promo_id
+                  to: ref('stg_orders')
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
