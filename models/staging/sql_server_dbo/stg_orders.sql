@@ -7,21 +7,26 @@ with src_orders as (
 stg_orders as (
 
     select
-        order_id::varchar(50) as order_id,
-        shipping_service::varchar() as shipping_service,
-        shipping_cost::float as shipping_cost_USD,
-        address_id::varchar(50) as address_id,
-        created_at::timestamp_tz as created_at_UTC,
-        CASE WHEN promo_id = '' THEN 'sin promo' ELSE promo_id END as promo_type,
-        estimated_delivery_at::timestamp_tz as estimated_delivery_at_UTC,
-        order_cost::float as order_cost_USD,
-        user_id::varchar(50) as user_id,
-        order_total::float as order_total_USD,
-        delivered_at::timestamp_tz as delivered_at_UTC,
-        tracking_id::varchar(50) as tracking_id,
-        status::varchar(50) as status,
-        _fivetran_deleted::boolean as _fivetran_deleted,
-        _fivetran_synced::timestamp_ntz(9) as date_load_UTC
+        cast (order_id as varchar(50)) as order_id,
+        cast (shipping_service as varchar(50)) as shipping_service,
+        cast (shipping_cost as float) as shipping_cost_usd,
+        cast (address_id as varchar(50)) as address_id,
+        cast (created_at as timestamp_tz) as created_at_utc,
+        to_date(estimated_delivery_at) as estimated_delivery_date_utc,
+        to_time(estimated_delivery_at) as estimated_delivery_time_utc,
+        cast (order_cost as float) as order_cost_usd,
+        cast (user_id as varchar(50)) as user_id,
+        cast (order_total as float) as order_total_usd,
+        to_date(delivered_at) as delivered_date_utc,
+        to_time(delivered_at) as delivered_time_utc,
+        CASE 
+            WHEN tracking_id = '' THEN 'preparing'
+            ELSE tracking_id 
+            END AS tracking_id,
+        promo_id, --este campo lo comprobamos para la integridad visual con el HASH que viene de la tabla PROMOS
+        cast({{dbt_utils.generate_surrogate_key(['promo_id'])}} as STRING) as promo_id,
+        cast (status as varchar(50)) as status,
+        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
 
     from src_orders
    

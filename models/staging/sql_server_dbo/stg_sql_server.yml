@@ -26,3 +26,44 @@ models:
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
+
+
+      - name: stg_orders
+        description: "Modelo de staging para la tabla tu_tabla"
+        columns:
+          - name: order_id
+            description: "Identificador del pedido"
+            tests:
+              - not_null
+          - name: shipping_service
+            description: "Servicio de envío"
+          - name: shipping_cost_usd
+            description: "Costo de envío en USD"
+          - name: address_id
+            description: "Identificador de la dirección"
+          - name: created_at_utc
+            description: "Fecha y hora de creación en UTC"
+            tests:
+              - not_null
+          - name: estimated_delivery_date_utc
+            description: "Fecha estimada de entrega en UTC"
+          - name: estimated_delivery_time_utc
+            description: "Hora estimada de entrega en UTC"
+          - name: order_cost_usd
+            description: "Costo del pedido en USD"
+          - name: user_id
+            description: "Identificador del usuario"
+          - name: order_total_usd
+            description: "Total del pedido en USD"
+          - name: delivered_date_utc
+            description: "Fecha de entrega en UTC"
+          - name: delivered_time_utc
+            description: "Hora de entrega en UTC"
+          - name: tracking_id
+            description: "ID de seguimiento"
+          - name: promo_id
+            description: "ID de promoción"
+          - name: status
+            description: "Estado del pedido"
+          - name: date_load_utc
+            description: "Fecha de carga en UTC"

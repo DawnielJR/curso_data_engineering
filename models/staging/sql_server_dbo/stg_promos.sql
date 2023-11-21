@@ -9,10 +9,10 @@ with src_promos as (
 
 stg_promos as (
     select
-        UPPER(promo_id) as promo_type,
+        promo_id as promo_type,
         cast(discount as FLOAT) as discount_USD,
         cast (status as VARCHAR(50)) as promo_status,
-        {{dbt_utils.generate_surrogate_key(['promo_id'])}} as promo_sk,
+        cast({{dbt_utils.generate_surrogate_key(['promo_id'])}} as STRING) as promo_id,
         _fivetran_synced as date_load
     from src_promos
 )
@@ -21,9 +21,13 @@ select
     promo_type,
     discount_USD,
     promo_status,
-    promo_sk
+    promo_id
 from stg_promos
 union all 
-SELECT 'SIN_PROMO', 0, 'inactive', '9999' 
+SELECT 
+    'sin_promo' ,
+    0 , 
+    'inactive' ,
+    {{dbt_utils.generate_surrogate_key(['9999'])}} 
 
 
