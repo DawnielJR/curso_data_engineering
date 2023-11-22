@@ -9,17 +9,17 @@ with src_promos as (
 
 stg_promos as (
     select
-        promo_id as promo_type,
-        cast(discount as FLOAT) as discount_USD,
+        cast (promo_id as VARCHAR (30)) as promo_type,
+        cast(discount as FLOAT) as discount_usd,
         cast (status as VARCHAR(50)) as promo_status,
         cast({{dbt_utils.generate_surrogate_key(['promo_id'])}} as STRING) as promo_id,
-        _fivetran_synced as date_load
+        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc,
     from src_promos
 )
 
 select 
     promo_type,
-    discount_USD,
+    discount_usd,
     promo_status,
     promo_id
 from stg_promos

@@ -14,11 +14,11 @@ with src_products as (
 stg_products as (
 
     select
-        product_id,
-        price,
-        name,
-        inventory,
-        _fivetran_synced as date_load
+        cast (product_id as STRING) as product_id,
+        cast (price as FLOAT) as price_usd,
+        cast (name as VARCHAR (50)) as name,
+        cast (inventory as INT) as inventory,
+        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
 
     from src_products
 

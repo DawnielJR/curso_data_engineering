@@ -14,10 +14,10 @@ with src_order_items as (
 stg_order_items as (
 
     select
-        order_id,
-        product_id,
-        quantity,
-        _fivetran_synced as date_load
+        cast (order_id as STRING) as order_id,
+        cast (product_id as STRING) as product_id,
+        cast (quantity as INT) as quantity,
+        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
 
     from src_order_items
 
