@@ -1,0 +1,230 @@
+version: 2
+
+sources:
+
+  - name: sql_server_dbo # name of the source 
+    description: >
+      raw data
+    schema: sql_server_dbo # this is the schema our raw data lives in
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 5, period: day}
+      error_after: {count: 10, period: day}
+
+    tables:
+
+      - name: addresses
+        loaded_at_field: _fivetran_synced
+        description: >
+          Address info for each customer  
+        columns:
+          - name: zipcode
+            description: >
+              zipcode number for each customer address
+          - name: country
+            description: >
+              Country for each customer address
+          - name: address
+            description: >
+              Exact address for each customer
+          - name: state
+            description: >
+              State for each customer address
+          - name: _fivetran_deleted
+            description: >
+              Date that the data was deleted
+          - name: _fivetran_synced
+            description: >
+              Date that the data was loaded
+
+        
+        
+      - name: events
+        description: >
+          Data about events in the platform of demo.
+        columns:
+          - name: event_id
+            description: >
+              UUID of each unique event on the platform.
+            tests:
+              - not_null
+              - unique
+          - name: session_id
+            description: >
+              UUID of each browsing session on the platform which can contain many events.
+            tests:
+              - not_null
+          - name: user_id
+            description: >
+              UUID of the user that this event is associated with.
+            tests:
+              - not_null
+          - name: page_url
+            description: >
+              URL that the event happened on.
+            tests:
+              - not_null
+          - name: created_at
+            description: >
+              Timestamp of the event (UTC).
+            tests:
+              - not_null
+          - name: event_type
+            description: >
+              Type of event.
+            tests:
+              - not_null
+          - name: order_id
+            description: >
+              If the event is specific to an order (mostly used for checkout).
+          - name: product_id
+            description: >
+              If the event is specific to a product.
+          - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
+            tests:
+              - not_null
+
+
+      - name: orders
+        loaded_at_field: _fivetran_synced
+        description: >
+          Raw data for orders per customers
+        columns:
+          - name: order_id
+            description: >
+              Represent the id for Orders table
+          - name: shipping_service
+            description: >
+              Represents the shipment of the order
+          - name: shipping_cost
+            description: >
+              Represents the cost of shipping
+          - name: address_id
+            description: >
+              Represent the id for Address table
+          - name: created_at
+            description: >
+              Date on which the order was placed
+          - name: promo_id
+            description: >
+              Represent the id for Promo table
+          - name: estimated_delivery
+            description: >
+              Date on which the delivery of the order
+          - name: order_cost
+            description: >
+              Represent the cost for the delivery
+          - name: user_id
+            description: >
+              Represent the id for user table
+          - name: order_total
+            description: >
+              Total cost for delivery order
+          - name: delivered_at
+            description: >
+              Date on which the delivery was shipped
+          - name: tracking_id
+            description: >
+              Represent the tracking id
+          - name: status
+            description: >
+              Represent the status for the delivery
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: order_items
+        loaded_at_field: _fivetran_synced
+        description: >
+          Represent the table for items was orders 
+        columns:
+          - name: order_id
+            description: >
+              Represent the id for Order table
+          - name: product_id
+            description: >
+              Represent the Product id
+          - name: quantity
+            description: >
+              Quantity for each product
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: products
+        loaded_at_field: _fivetran_synced
+        description: >
+          Contains all info about products
+        columns:
+          - name: product_id
+            description: >
+              Id for each product
+          - name: price
+            description: >
+              Price for each product
+          - name: name
+            description: >
+              Name for each product
+          - name: inventory
+            description: >
+              Represent the quantity for each product on inventory
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: promos
+        loaded_at_field: _fivetran_synced
+        description: >
+          All info about promo table
+        columns:
+          - name: promo_id
+            description: >
+              Represent the Promo id
+          - name: discount
+            description: >
+              Discount for each product
+          - name: status
+            description: >
+              Represent the status for promos, active or inactive
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: users
+        loaded_at_field: _fivetran_synced
+        description: >
+          All info about user table
+        columns:
+          - name: user_id
+            description: >
+              ID from user table
+          - name: update_at
+            description: >
+              Date that was update user account
+          - name: address_id
+            description: >
+              Represent the id from address table
+          - name: last_name
+            description: >
+              Last name of user
+          - name: created_at
+            description: >
+              Date that user account was created
+          - name: phone_number
+            description: >
+              Phone number for each user
+          - name: total_orders
+            description: >
+              Represent the amount of total orders
+          - name: first_name
+            description: >
+              first name for each user
+          - name: email
+            description: >
+              email for each user
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
