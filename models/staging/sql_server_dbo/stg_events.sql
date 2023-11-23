@@ -1,10 +1,11 @@
 with src_events as (
-    select * from {{ ref('base_events') }}
+    select * from {{ ref( 'base_events') }}
 ),
 tmp_stg_events as (
     select
         event_id,
         page_url,
+        event_type,
         product_id , 
         user_id,
         session_id,
