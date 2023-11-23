@@ -1,5 +1,5 @@
 {{ config(
-  materialized='table'
+  materialized='view'
 ) }}
 
 
@@ -13,7 +13,7 @@ stg_promos as (
         cast(discount as FLOAT) as discount_usd,
         cast (status as VARCHAR(50)) as promo_status,
         cast({{dbt_utils.generate_surrogate_key(['promo_id'])}} as STRING) as promo_id,
-        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc,
+        cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
     from src_promos
 )
 

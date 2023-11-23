@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='table'
+    materialized='view'
   )
 }}
 
@@ -24,4 +24,15 @@ stg_products as (
 
 )
 
-select * from stg_products
+select
+product_id,
+price_usd,
+name,
+inventory 
+from stg_products
+union all 
+SELECT 
+    {{dbt_utils.generate_surrogate_key(['0000'])}}  ,
+    0 , 
+    'no_product' ,
+    0 

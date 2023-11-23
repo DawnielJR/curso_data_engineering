@@ -1,4 +1,4 @@
-{{ config(materialized="table") }}
+{{ config(materialized="view") }}
 
 with
 src_addresses as (select * from {{ source("sql_server_dbo", "addresses") }}),

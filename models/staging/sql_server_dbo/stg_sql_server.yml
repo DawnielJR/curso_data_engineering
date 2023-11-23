@@ -67,3 +67,4 @@ models:
             description: "Estado del pedido"
           - name: date_load_utc
             description: "Fecha de carga en UTC"
+
