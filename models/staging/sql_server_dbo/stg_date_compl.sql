@@ -17,7 +17,7 @@ with date as (
 
 
 select
-      date_day as fecha_forecast
+      date_day as forecast_date
     , year(date_day)*10000+month(date_day)*100+day(date_day) as id_date
     , year(date_day) as year
     , month(date_day) as month

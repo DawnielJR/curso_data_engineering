@@ -1,3 +1,3 @@
 SELECT *
 FROM {{ ref('stg_orders') }}
-WHERE delivered_at < created_at
+WHERE delivered_date_utc < created_at_utc

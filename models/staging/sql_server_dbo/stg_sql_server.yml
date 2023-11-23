@@ -6,65 +6,206 @@ models:
         description: >
           All info about promo table
         columns:
-          - name: promo_id
+          - name: promo_type
             description: >
               Represent the Promo id was changed to promo_type
-          - name: discount
+          - name: discount_usd
             description: >
               Discount for each product
-          - name: status
+          - name: promo_status
             description: >
               Represent the status for promos, active or inactive was changed to status_promo
-          - name: promo_sk
+          - name: promo_id
             description: >
               Surrogated key for promo table
             tests: 
               - unique
-              - relationships:
-                  field: promo_id
-                  to: ref('stg_orders')
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
 
 
       - name: stg_orders
-        description: "Modelo de staging para la tabla tu_tabla"
+        description: "stg model for order table"
         columns:
           - name: order_id
-            description: "Identificador del pedido"
+            description: "Order identifier"
             tests:
               - not_null
           - name: shipping_service
-            description: "Servicio de envío"
+            description: "Shipping service"
           - name: shipping_cost_usd
-            description: "Costo de envío en USD"
+            description: "shipping cost on usd"
           - name: address_id
-            description: "Identificador de la dirección"
+            description: "Address identifier"
           - name: created_at_utc
-            description: "Fecha y hora de creación en UTC"
+            description: "Date that was created the order"
             tests:
               - not_null
           - name: estimated_delivery_date_utc
-            description: "Fecha estimada de entrega en UTC"
+            description: "Estimated delivery date on utc"
           - name: estimated_delivery_time_utc
-            description: "Hora estimada de entrega en UTC"
+            description: "Estimated delivery time on utc"
           - name: order_cost_usd
-            description: "Costo del pedido en USD"
+            description: "order cost on USD"
           - name: user_id
-            description: "Identificador del usuario"
+            description: "User identifier"
           - name: order_total_usd
-            description: "Total del pedido en USD"
+            description: "total cost on usd"
           - name: delivered_date_utc
-            description: "Fecha de entrega en UTC"
+            description: "delivered date on UTC"
           - name: delivered_time_utc
-            description: "Hora de entrega en UTC"
+            description: "delivered time on UTC"
           - name: tracking_id
-            description: "ID de seguimiento"
+            description: "Tracking identifier"
           - name: promo_id
-            description: "ID de promoción"
+            description: "Promo identifier"
           - name: status
-            description: "Estado del pedido"
+            description: "Order status"
           - name: date_load_utc
-            description: "Fecha de carga en UTC"
+            description: "date data was load on UTC"
+
+      - name: stg_addresses
+        description: All info about adresses table
+        columns:
+          - name: address_id
+            description: "Unique identifier for the address"
+          - name: zipcode
+            description: "Zip code of the address"
+          - name: country
+            description: "Country of the address"
+          - name: address
+            description: "Street address"
+          - name: state
+            description: "State of the address"
+          - name: full_address
+            description: "Concatenation of address components"
+          - name: date_load
+            description: "Date when the record was loaded"
+
+      - name: stg_date_compl
+        description: >
+          Model representing forecast dates
+        columns:
+          - name: forecast_date
+            description: "Forecast date"
+          - name: id_date
+            description: "Unique identifier for the date"
+          - name: year
+            description: "Year of the date"
+          - name: month
+            description: "Month of the date"
+          - name: desc_month
+            description: "Month name of the date"
+          - name: id_year_month
+            description: "Unique identifier for year and month"
+          - name: previous_day
+            description: "Previous day of the date"
+          - name: year_week_day
+            description: "Year, ISO week, and day of the week"
+          - name: week
+            description: "ISO week of the date"
+         
+      - name: stg_event_type
+        description: "Staging model for event type"
+        columns:
+          - name: event_type_id
+            description: "Surrogate key for event types"
+          - name: event_type
+            description: "Type of the event"
+
+      - name: stg_events
+        description: "Staging model for events"
+        columns:
+          - name: event_id
+            description: "ID of the event"
+          - name: page_url
+            description: "URL of the page"
+          - name: product_id
+            description: "Product idenfier"
+          - name: user_id
+            description: "ID of the user"
+          - name: session_id
+            description: "ID of the session"
+          - name: created_date
+            description: "Date of event creation"
+          - name: created_time
+            description: "Time of event creation"
+          - name: order_id
+            description: "ID of the order associated with the event"
+          - name: date_load_utc
+            description: "Date and time when the record was loaded in UTC"
+
+      - name: stg_order_items
+        description: "Staging model for order items"
+        columns:
+          - name: order_id
+            description: "ID of the order"
+          - name: product_id
+            description: "ID of the product"
+          - name: quantity
+            description: "Quantity of the product in the order"
+          - name: date_load_utc
+            description: "Date and time when the record was loaded in UTC"
+
+      - name: stg_products
+        description: "Staging model for products"
+        columns:
+          - name: product_id
+            description: "ID of the product"
+          - name: price_usd
+            description: "Price of the product in USD"
+          - name: name
+            description: "Name of the product"
+          - name: inventory
+            description: "Inventory count of the product"
+          - name: date_load_utc
+            description: "Date and time when the record was loaded in UTC"
+
+      - name: stg_users
+        description: "Staging model for users"
+        columns:
+        - name: user_id
+          description: "ID of the user"
+        - name: address_id
+          description: "ID of the user's address"
+        - name: first_name
+          description: "First name of the user"
+        - name: last_name
+          description: "Last name of the user"
+        - name: phone_number
+          description: "Phone number of the user"
+        - name: email
+          description: "Email address of the user"
+        - name: created_at_date
+          description: "Date when the user was created"
+        - name: created_at_time
+          description: "Time when the user was created"
+        - name: updated_at_date
+          description: "Date when the user was last updated"
+        - name: updated_at_time
+          description: "Time when the user was last updated"
+        - name: total_orders
+          description: "Total number of orders for the user"
+        - name: date_load_utc
+          description: "Date and time when the record was loaded in UTC"
+
+      - name: stg_budget
+        description: "Staging model for budget"
+        columns:
+        - name: budget_id
+          description: "ID of the budget record"
+        - name: product_id
+          description: "ID of the product"
+        - name: quantity
+          description: "Quantity in the budget"
+        - name: month_date
+          description: "Month of the budget"
+        - name: month_day
+          description: "Day of the month in the budget"
+        - name: date_load_utc
+          description: "Date and time when the record was loaded in UTC"
+
+
+  
 
