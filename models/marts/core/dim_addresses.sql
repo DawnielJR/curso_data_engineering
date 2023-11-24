@@ -11,11 +11,12 @@ WITH dim_addresses AS (
 
 dim_address_casted AS (
     SELECT
-        address_id ,
+        address_key ,
+        zipcode ,
+        country, 
         address ,
-        zipcode , 
-        country ,  
-        state  
+        state ,  
+        date_load 
     FROM dim_addresses
     )
 
