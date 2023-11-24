@@ -13,7 +13,6 @@ WITH src_users AS (
 stg_users AS (
     SELECT
         cast (user_id as STRING) as user_id,
-
         cast (address_id as STRING) as address_id ,
         cast (first_name as VARCHAR (50)) as first_name,
         cast (last_name as VARCHAR (50)) as last_name ,
