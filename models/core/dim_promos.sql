@@ -11,7 +11,7 @@ WITH dim_promos AS (
 
 dim_promos_casted AS (
     SELECT
-        promo_id ,
+        promo_key ,
         promo_type ,
         promo_status 
     FROM dim_promos

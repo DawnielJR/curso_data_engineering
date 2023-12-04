@@ -11,8 +11,8 @@ WITH dim_users AS (
 
 dim_users_casted AS (
     SELECT
-        user_id ,
-        address_id ,
+        user_key ,
+        address_key ,
         CONCAT(first_name, ' ', last_name) as full_name , 
         phone_number ,  
         email 

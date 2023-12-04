@@ -11,8 +11,8 @@ WITH dim_url AS (
 
 dim_url_casted AS (
     SELECT
-        event_id ,
-        session_id ,
+        event_key ,
+        session_key ,
         page_url  
     FROM dim_url
     )

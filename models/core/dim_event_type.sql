@@ -11,7 +11,7 @@ WITH dim_event_type AS (
 
 dim_event_type_casted AS (
     SELECT
-    event_type_id,
+    event_type_key,
     event_type
     FROM dim_event_type
     )

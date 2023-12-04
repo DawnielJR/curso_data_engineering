@@ -5,7 +5,6 @@ tmp_stg_events as (
     select
         event_id,
         page_url,
-        event_type,
         product_id , 
         user_id,
         session_id,

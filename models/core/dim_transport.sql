@@ -11,7 +11,7 @@ WITH dim_transport AS (
 
 dim_transport_casted AS (
     SELECT
-        tracking_id ,
+        tracking_key ,
         shipping_service 
     FROM dim_transport
     )

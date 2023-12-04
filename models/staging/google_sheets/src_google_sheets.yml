@@ -4,7 +4,7 @@ sources:
 
   - name: google_sheets # name of the source 
     schema: google_sheets # this is the schema our raw data lives in
-    database: ALUMNO17_DEV_BRONZE_DB # this is the name of our database
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"  # this is the name of our database
 
     quoting:
       database: false
@@ -12,8 +12,8 @@ sources:
       identifier: false
 
     freshness:
-      warn_after: {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+      warn_after: {count: 32, period: day}
+      error_after: {count: 33, period: day}
 
     tables:
 
@@ -25,6 +25,14 @@ sources:
               - unique
               - not_null
           - name: product_id
+            tests:
+              - relationships:
+                 to: source('sql_server_dbo','stg_products')
+                 field: product_id
           - name: quantity
+            tests:
+              - positive_values
           - name: month
+            tests:
+              - not_null
           - name: _fivetran_synced

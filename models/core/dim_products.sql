@@ -11,7 +11,7 @@ WITH dim_products AS (
 
 dim_products_casted AS (
     SELECT
-        product_id ,
+        product_key ,
         name
     FROM dim_products
     )
