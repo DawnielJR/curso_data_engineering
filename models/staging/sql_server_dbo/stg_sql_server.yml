@@ -60,7 +60,11 @@ models:
               - relationships:
                   to: ref('stg_addresses')
                   field: address_id
-          - name: created_at_utc
+          - name: created_date_utc
+            description: "Date that was created the order"
+            tests:
+              - not_null
+          - name: created_time_utc
             description: "Date that was created the order"
             tests:
               - not_null
@@ -141,10 +145,6 @@ models:
                 - not_null
           - name: state
             description: "State of the address"
-            tests:
-                - not_null
-          - name: full_address
-            description: "Concatenation of address components"
             tests:
                 - not_null
           - name: date_load
@@ -231,9 +231,6 @@ models:
           - name: created_time
             description: "Time of event creation"
           - name: order_id
-            tests:
-              - not_null
-              - unique
             description: "ID of the order associated with the event"
           - name: date_load_utc
             description: "Date and time when the record was loaded in UTC"

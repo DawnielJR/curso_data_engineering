@@ -1,7 +1,6 @@
 {{
   config(
-    materialized='view' , 
-    unique_key='promo_id'
+    materialized='view' 
   )
 }}
 
@@ -12,7 +11,7 @@ with src_promos as (
 
 stg_promos as (
     SELECT
-        cast (promo_id as VARCHAR (128)) as promo_id,
+        lower(promo_id) as promo_id,
         cast(discount as FLOAT) as discount_usd,
         cast (status as VARCHAR(50)) as promo_status,
         cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc

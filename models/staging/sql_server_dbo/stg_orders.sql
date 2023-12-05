@@ -14,7 +14,8 @@ with src_orders as (
             WHEN status = 'preparing' THEN 'undefined'
             ELSE COALESCE(tracking_id, 'undefined')
         END AS tracking_id ,
-        cast (created_at as timestamp_tz) as created_at_utc ,
+        to_date (created_at) as created_date_utc ,
+        to_time (created_at) as created_time_utc ,
         to_date(estimated_delivery_at) as estimated_delivery_date_utc ,
         to_time(estimated_delivery_at) as estimated_delivery_time_utc ,
         to_date(delivered_at) as delivered_date_utc ,
@@ -32,8 +33,8 @@ with src_orders as (
             'Optional', 'optional',
             'Mandatory', 'mandatory',
             'Digitized', 'digitized',
-            '', 'no promotion'
-        ) AS promo_id ,
+            '', 'sin promo'
+          ) AS promo_id , 
         cast (shipping_cost as float) as shipping_cost_usd ,
         cast (order_cost as float) as order_cost_usd ,
         cast (order_total as float) as order_total_usd ,
@@ -49,7 +50,8 @@ stg_orders_casted as (
         user_id ,
         address_id ,
         tracking_id ,
-        created_at_utc,
+        created_time_utc,
+        created_date_utc ,
         estimated_delivery_date_utc ,
         estimated_delivery_time_utc ,
         delivered_date_utc ,
@@ -69,3 +71,5 @@ stg_orders_casted as (
 SELECT 
 *
 FROM stg_orders_casted
+
+
