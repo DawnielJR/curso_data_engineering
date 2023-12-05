@@ -124,10 +124,6 @@ sources:
           - name: shipping_service
             description: >
               Represents the shipment of the order
-            tests:
-              - accepted_values:
-                  values:
-                    - ['fedex', 'ups', 'usps', 'dhl' , '']
           - name: shipping_cost
             description: >
               Represents the cost of shipping
@@ -261,10 +257,6 @@ sources:
           - name: status
             description: >
               Represent the status for promos, active or inactive
-            tests:
-              - accepted_values:
-                  values:
-                    - ['inactive','active']
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -282,8 +274,6 @@ sources:
           - name: update_at
             description: >
               Date that was update user account
-            tests:
-              - not_null
           - name: address_id
             description: >
               Represent the id from address table

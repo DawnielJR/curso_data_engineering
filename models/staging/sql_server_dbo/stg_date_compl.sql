@@ -1,32 +1,18 @@
-{{ 
-    config(
-        materialized='view', 
-        sort='date_day',
-        dist='date_day',
-        pre_hook="alter session set timezone = 'Europe/Madrid'; alter session set week_start = 7;" 
-        ) }}
+{{ config(
+  materialized='view' ,
+  unique_key='date'
+) }}
 
-with date as (
-    {{ dbt_utils.date_spine(
-        datepart="day",
-        start_date="cast('2000-01-01' as date)",
-        end_date="cast(current_date()+1 as date)"
-    )
-    }}  
+WITH stg_date_month AS 
+(
+  {{ dbt_date.get_date_dimension("2010-01-01", "2070-12-31") }}
 )
 
-
-select
-      date_day as forecast_date
-    , day (date_day) as day 
-    , year(date_day)*10000+month(date_day)*100+day(date_day) as id_date
-    , year(date_day) as year
-    , month(date_day) as month
-    , monthname(date_day) as month_name
-    , year(date_day)*100+month(date_day) as id_year_month
-    , date_day-1 as previous_day
-    , year(date_day)||weekiso(date_day)||dayofweek(date_day) as year_week_day
-    , weekiso(date_day) as week
-from date
-order by
-    date_day desc
+SELECT
+    date_day AS date ,
+    day_of_week_name AS day_of_week , 
+    day_of_month AS day_of_month ,
+    week_of_year AS week_of_year , 
+    month_of_year AS month_of_year , 
+    year_number AS year_number 
+FROM stg_date_month
