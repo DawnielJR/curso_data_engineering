@@ -8,8 +8,8 @@ tmp_stg_events as (
         product_id , 
         user_id,
         session_id,
-        created_date,
-        created_time,
+        created_date_utc,
+        created_time_utc,
         order_id,
         date_load_utc
     from src_events
