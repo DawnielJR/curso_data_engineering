@@ -167,19 +167,6 @@ models:
           - name: year_number
             description: "Represent the year number on calendar"
          
-      - name: stg_event_type
-        description: "Staging model for event type"
-        columns:
-          - name: event_type_id
-            description: "Surrogate key for event types"
-            tests:
-                - unique
-                - not_null
-          - name: event_type
-            description: "Type of the event"
-            tests:
-                - not_null
-
       - name: stg_events
         description: "Staging model for events"
         columns:
@@ -188,6 +175,8 @@ models:
             tests:
                 - unique
                 - not_null
+          - name: event_id
+            description: "Hash ID of the event"
           - name: page_url
             description: "URL of the page"
             tests:
@@ -209,6 +198,10 @@ models:
             description: "ID of the session"
             tests:
               - not_null
+          - name: event_type
+            description: "Type of the event"
+            tests:
+                - not_null
           - name: created_date_utc
             description: "Date of event creation"
             tests:
