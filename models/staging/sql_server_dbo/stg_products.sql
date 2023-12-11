@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='view'
+    materialized='incremental' ,
+    unique_key = 'product_id'
   )
 }}
 
@@ -19,6 +20,9 @@ SELECT
     'Without Products' AS product_name ,
     '0' AS inventory ,
     '2023-12-12 12:00:00.851000' AS date_load_utc
+{% if is_incremental()%}
+where _fivetran_synced > (select max (date_load_utc) from {{this}})
+{%endif%}
 
 ),
 

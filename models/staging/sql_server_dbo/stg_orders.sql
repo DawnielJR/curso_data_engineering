@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='view'
+    materialized='incremental' ,
+    unique_key = 'order_id'
   )
 }}
 
@@ -41,7 +42,9 @@ with src_orders as (
         cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
 
     FROM {{ source('sql_server_dbo', 'orders') }}
-
+{% if is_incremental()%}
+where _fivetran_synced > (select max (date_load_utc) from {{this}})
+{%endif%}
 ),
 
 stg_orders_casted as (

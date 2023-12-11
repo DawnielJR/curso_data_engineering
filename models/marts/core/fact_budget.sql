@@ -1,14 +1,16 @@
 {{
-  config(
-    materialized='table'
-  )
+    config(
+        materialized='table'
+    )
 }}
 
-WITH stg_budget AS 
+WITH dim_budget_snapshot AS
 (
     SELECT *
-    FROM {{ ref('stg_budget') }}
+    FROM {{ ref ('fact_budget_snapshot')}}
 )
 
-SELECT *
-FROM stg_budget
+SELECT 
+*
+FROM dim_budget_snapshot
+where dbt_valid_to is null

@@ -3,39 +3,11 @@
         materialized='table'
     )
 }}
-WITH stg_orders AS
-(
-    SELECT DISTINCT user_id
-    FROM {{ref ('stg_orders')}}
-),
 
-stg_users AS
-(
-    SELECT DISTINCT user_id
-    FROM {{ref ('stg_users')}}
-),
-
-stg_events AS
-(
-    SELECT DISTINCT user_id
-    FROM {{ref ('stg_events')}}
-),
-
-all_duplicates_users AS 
+WITH dim_users_snapshot AS
 (
     SELECT *
-    FROM stg_users
-    UNION ALL
-    SELECT *
-    FROM stg_events
-    UNION ALL
-    SELECT *
-    FROM stg_orders
-),
-
-without_duplicates AS(
-    SELECT DISTINCT user_id
-    FROM all_duplicates_users
+    FROM {{ ref ('dim_users_snapshot')}}
 )
 
 SELECT 
@@ -49,6 +21,6 @@ SELECT
     created_time_utc ,
     updated_at_date ,
     updated_at_time
-FROM without_duplicates
-FULL JOIN {{ ref('stg_users')}}
-USING (user_id)
+FROM dim_users_snapshot
+where dbt_valid_to is null
+ 

@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='view' , 
+    materialized='incremental' , 
     unique_key='user_id'
   )
 }}
@@ -24,6 +24,9 @@ stg_users AS (
         to_time(updated_at) as updated_at_time,
         cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
     FROM src_users
+    {% if is_incremental()%}
+    where _fivetran_synced > (select max (date_load_utc) from {{this}})
+    {%endif%}
     )
 
 SELECT 

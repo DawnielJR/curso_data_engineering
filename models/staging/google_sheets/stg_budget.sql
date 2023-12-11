@@ -1,6 +1,7 @@
 {{
   config(
-    materialized='view'
+    materialized='incremental' ,
+    unique_key = 'budget_id'
   )
 }}
 
@@ -22,6 +23,9 @@ stg_budget as (
 
     from src_budget
 
+{% if is_incremental()%}
+where _fivetran_synced > (select max (date_load_utc) from {{this}})
+{%endif%}
 )
 
 select * from stg_budget
