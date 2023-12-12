@@ -12,6 +12,7 @@
 WITH stg_order_items AS (
     SELECT *
     FROM {{ ref("stg_order_items") }}
+    WHERE date_load_utc = (select max (date_load_utc) from {{ ref('stg_order_items')}})
 ),
 
 stg_products AS (
@@ -19,11 +20,13 @@ stg_products AS (
         product_id,
         price_usd
     FROM {{ ref("stg_products") }}
+    WHERE date_load_utc = (select max (date_load_utc) from {{ ref('stg_products')}})
 ),
 
 stg_orders AS (
     SELECT *
     FROM {{ ref("stg_orders") }}
+    WHERE date_load_utc = (select max (date_load_utc) from {{ ref('stg_orders')}})
 ),
 
 stg_orders_quantity AS (
@@ -66,7 +69,9 @@ union_order_items AS (
     USING(product_id)
     JOIN stg_orders_quantity
     USING(order_id)
+    WHERE date_load_utc = (select max (date_load_utc) from {{ ref('stg_products')}})
     ORDER BY order_id
+
 )
    
 SELECT
@@ -93,5 +98,6 @@ SELECT
     date_load_utc
 
 FROM union_order_items
+WHERE date_load_utc = (select max (date_load_utc) from {{ ref('stg_products')}})
 
 {% endsnapshot %}

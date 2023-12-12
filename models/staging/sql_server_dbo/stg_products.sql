@@ -13,6 +13,9 @@ SELECT
     cast(inventory as INTEGER) as inventory,
     cast(_fivetran_synced as timestamp_ntz(9)) as date_load_utc 
 FROM {{ source('sql_server_dbo', 'products') }}
+{% if is_incremental()%}
+where _fivetran_synced > (select max (date_load_utc) from {{this}})
+{%endif%}
 UNION ALL
 SELECT
     null AS product_id ,
@@ -20,9 +23,7 @@ SELECT
     'Without Products' AS product_name ,
     '0' AS inventory ,
     '2023-12-12 12:00:00.851000' AS date_load_utc
-{% if is_incremental()%}
-where _fivetran_synced > (select max (date_load_utc) from {{this}})
-{%endif%}
+
 
 ),
 
