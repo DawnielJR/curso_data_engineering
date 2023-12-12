@@ -4,16 +4,12 @@
   )
 }}
 
-WITH dim_event_type AS (
-    SELECT * 
-    FROM {{ ref('stg_event_type') }}
-    ),
-
-dim_event_type_casted AS (
-    SELECT
+WITH stg_event_types_id AS (
+    SELECT DISTINCT 
     event_type_id,
     event_type
-    FROM dim_event_type
-    )
+    FROM {{ ref('stg_events') }}
+)
 
-SELECT * FROM dim_event_type_casted
+SELECT *
+FROM stg_event_types_id

@@ -15,7 +15,7 @@ sources:
 
     freshness:
       warn_after: {count: 5, period: day}
-      error_after: {count: 10, period: day}
+      error_after: {count: 6, period: day}
 
     tables:
 
@@ -24,18 +24,31 @@ sources:
         description: >
           Address info for each customer  
         columns:
+          - name: address_id
+            description: Represent the ID for Address table
+            tests:
+              - unique
+              - not_null
           - name: zipcode
             description: >
               zipcode number for each customer address
+            tests:
+              - not_null
           - name: country
             description: >
               Country for each customer address
+            tests:
+              - not_null
           - name: address
             description: >
               Exact address for each customer
+            tests:
+              - not_null
           - name: state
             description: >
               State for each customer address
+            tests:
+              - not_null
           - name: _fivetran_deleted
             description: >
               Date that the data was deleted
@@ -83,9 +96,13 @@ sources:
           - name: order_id
             description: >
               If the event is specific to an order (mostly used for checkout).
+            tests:
+              - not_null
           - name: product_id
             description: >
               If the event is specific to a product.
+            tests:
+              - not_null
           - name: _fivetran_synced
             description: >
               Date that the data was loaded.
@@ -101,33 +118,54 @@ sources:
           - name: order_id
             description: >
               Represent the id for Orders table
+            tests:
+              - not_null
+              - unique
           - name: shipping_service
             description: >
               Represents the shipment of the order
           - name: shipping_cost
             description: >
               Represents the cost of shipping
+            tests:
+              - positive_values
+              - not_null
           - name: address_id
             description: >
               Represent the id for Address table
+            tests:
+              - not_null
           - name: created_at
             description: >
               Date on which the order was placed
+            tests:
+              - not_null
           - name: promo_id
             description: >
               Represent the id for Promo table
+            tests:
+              - accepted_values:
+                  values: ['task-force','instruction set','leverage','Optional','Mandatory','Digitized','']
           - name: estimated_delivery
             description: >
               Date on which the delivery of the order
           - name: order_cost
             description: >
               Represent the cost for the delivery
+            tests:
+              - positive_values
+              - not_null
           - name: user_id
             description: >
               Represent the id for user table
+            tests:
+              - not_null
           - name: order_total
             description: >
               Total cost for delivery order
+            tests:
+              - positive_values
+              - not_null
           - name: delivered_at
             description: >
               Date on which the delivery was shipped
@@ -137,6 +175,9 @@ sources:
           - name: status
             description: >
               Represent the status for the delivery
+            tests:
+              - accepted_values:
+                  values: ['delivered','preparing','shipped']
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -148,12 +189,21 @@ sources:
           - name: order_id
             description: >
               Represent the id for Order table
+            tests:
+              - not_null
           - name: product_id
             description: >
               Represent the Product id
+            tests:
+              - relationships:
+                 to: source('sql_server_dbo','stg_products')
+                 field: product_id
+              - not_null
           - name: quantity
             description: >
               Quantity for each product
+            tests:
+              - positive_values
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -165,15 +215,26 @@ sources:
           - name: product_id
             description: >
               Id for each product
+            tests:
+              - unique
+              - not_null
           - name: price
             description: >
               Price for each product
+            tests:
+              - positive_values
+              - not_null
           - name: name
             description: >
               Name for each product
+            tests: 
+              - not_null
           - name: inventory
             description: >
               Represent the quantity for each product on inventory
+            tests:
+              - positive_values
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -185,9 +246,14 @@ sources:
           - name: promo_id
             description: >
               Represent the Promo id
+            tests:
+              - unique
+              - not_null
           - name: discount
             description: >
               Discount for each product
+            tests:
+              - positive_values
           - name: status
             description: >
               Represent the status for promos, active or inactive
@@ -202,29 +268,44 @@ sources:
           - name: user_id
             description: >
               ID from user table
+            tests:
+              - unique
+              - not_null
           - name: update_at
             description: >
               Date that was update user account
           - name: address_id
             description: >
               Represent the id from address table
+            tests:
+              - not_null
           - name: last_name
             description: >
               Last name of user
+            tests:
+              - not_null
           - name: created_at
             description: >
               Date that user account was created
+            tests:
+              - not_null
           - name: phone_number
             description: >
               Phone number for each user
+            tests:
+              - not_null
           - name: total_orders
             description: >
               Represent the amount of total orders
           - name: first_name
             description: >
               first name for each user
+            tests:
+              - not_null
           - name: email
             description: >
               email for each user
+            tests:  
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced

@@ -1,19 +1,17 @@
 {{
-  config(
-    materialized='table'
-  )
+    config(
+        materialized='table'
+    )
 }}
 
-WITH dim_products AS (
-    SELECT * 
-    FROM {{ ref('stg_products') }}
-    ),
+WITH dim_products_snapshot AS
+(
+    SELECT *
+    FROM {{ ref ('dim_products_snapshot')}}
+)
 
-dim_products_casted AS (
-    SELECT
-        product_id ,
-        name
-    FROM dim_products
-    )
-
-SELECT * FROM dim_products_casted
+SELECT 
+*
+FROM dim_products_snapshot
+where dbt_valid_to is null
+ 

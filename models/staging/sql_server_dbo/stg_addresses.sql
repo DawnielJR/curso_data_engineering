@@ -1,16 +1,20 @@
-{{ config(materialized="view") }}
-
+{{
+  config(
+     materialized='view'
+    ,unique_key='address_id'
+  )
+}}
 with
 src_addresses as (select * from {{ source("sql_server_dbo", "addresses") }}),
 
 stg_addresses as (
 
     select
-        cast (address_id as STRING) as address_id,
-        cast (zipcode as STRING) as zipcode,
-        cast (country as STRING) as country,
-        cast (address as STRING) as address,
-        cast (state as STRING) as state,
+        cast (address_id as VARCHAR (128)) as address_id,
+        cast (zipcode as INTEGER) as zipcode,
+        cast (country as VARCHAR (128)) as country,
+        cast (address as VARCHAR (128)) as address,
+        cast (state as VARCHAR (128)) as state,
         _fivetran_synced as date_load
 
     from src_addresses
@@ -18,10 +22,5 @@ stg_addresses as (
 )
 
 select 
-    {{ dbt_utils.generate_surrogate_key(['address_id' , 'zipcode' ]) }} AS address_key ,
-    zipcode,
-    country,
-    address,
-    state,
-    date_load
+*
 from stg_addresses

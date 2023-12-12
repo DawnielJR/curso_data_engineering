@@ -1,0 +1,454 @@
+version: 2
+
+models:
+
+      - name: dim_addresses
+        description: "Address dimension"
+        columns:
+          - name: address_id
+            description: "Represents the main address id"
+            tests:
+              - unique
+              - not_null
+          - name: address
+            data_type: varchar
+            description: "Represent the Address"
+            tests:
+              - not_null
+          - name: zipcode
+            data_type: number
+            description: "Represent the zipcode of address"
+            tests:
+              - not_null
+              - positive_values
+          - name: state
+            data_type: varchar
+            description: "State or region of address"
+            tests:
+              - not_null
+          - name: country
+            data_type: varchar
+            description: "Country of region"
+            tests:
+              - not_null
+          - name: date_load
+            data_type: timestamp_tz
+            description: "Indicates the time and date of the data update."
+
+
+
+      - name: dim_date
+        description: "Date dimension"
+        columns:
+          - name: date
+            data_type: date
+            description: "Date"
+            tests:
+              - not_null
+              - unique
+          - name: day_of_week
+            data_type: number
+            description: "Day of week"
+            tests:
+              - not_null
+          - name: day_of_month
+            data_type: number
+            description: "Day of month"
+            tests:
+              - not_null
+          - name: week_of_year
+            data_type: number
+            description: "Week of year"
+            tests:
+              - not_null
+          - name: month_of_year
+            data_type: number
+            description: "Month of year"
+            tests:
+              - not_null
+          - name: year_number
+            data_type: number
+            description: "Year number"
+            tests:
+              - not_null
+
+      - name: dim_event_type
+        description: "Web events dimension"
+        columns:
+          - name: event_type_id
+            data_type: varchar
+            description: "Represent the main Id for event dimension"
+            tests:
+              - not_null
+              - unique
+          - name: event_type
+            data_type: varchar
+            description: "Description about event type"
+            tests:
+              - not_null
+
+      - name: dim_products
+        description: "Products dimension"
+        columns:
+          - name: product_id
+            data_type: varchar
+            description: "Represent the main ID for products dimension"
+            tests:
+              - unique
+          - name: product_name
+            data_type: varchar
+            description: "Product name"
+            tests:
+              - not_null
+          - name: price_usd
+            data_type: float
+            description: "Product price"
+            tests:
+              - not_null
+              - positive_values
+          - name: inventory
+            data_type: number
+            description: "Stock about products"
+            tests:
+              - not_null
+              - positive_values
+          - name: date_load
+            data_type: timestamp_tz
+            description: "Indicates the time and date of the data update."
+
+      - name: dim_promos
+        description: "Promotions dimension"
+        columns:
+          - name: promo_id
+            data_type: varchar
+            description: "Represent the ID for promo dimension"
+            tests:
+              - unique
+              - not_null
+          - name: promo_name
+            data_type: varchar
+            description: "Promotion name"
+            tests:
+              - not_null
+          - name: discount_usd
+            data_type: number
+            description: "Numeric value about promotion"
+          - name: promo_status
+            data_type: varchar
+            description: "State in which a promotion is ready for use"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ["inactive", "active"]
+          - name: date_load
+            data_type: timestamp_tz
+            description: "Indicates the time and date of the data update."
+
+      - name: dim_shipping_service
+        description: ""
+        columns:
+          - name: shipping_service_id
+            data_type: varchar
+            description: "Represent the ID for shipping service dimension"
+            tests:
+              - not_null
+              - unique
+          - name: shipping_service
+            data_type: varchar
+            description: "Shipping company name"
+            tests:
+              - not_null
+          - name: total_shipping_cost_usd
+            data_type: varchar
+            description: "Total company cost of your shipments"
+            tests:
+              - not_null
+              - positive_values
+          - name: total_shipping_service
+            data_type: varchar
+            description: "Total company shipments of your shipments"
+            tests:
+              - not_null
+              - positive_values
+          - name: avg_shipping_service_cost
+            data_type: varchar
+            description: "Average cost of the company's shipments"
+            tests:
+              - not_null
+              - positive_values
+          - name: most_common_shipment_days
+            data_type: varchar
+            description: "Store in an array the most common shipping days by carrier"
+
+      - name: dim_status
+        description: "Status dimension"
+        columns:
+          - name: status_id
+            data_type: varchar
+            description: "Represent the ID for status dimension"
+            tests:
+              - not_null
+              - unique
+          - name: status
+            data_type: varchar
+            description: "Status description"
+  
+      - name: dim_time
+        description: "Dimension for Date and Time"
+        columns:
+          - name: timestamp
+            data_type: timestamp
+            description: "Timestamp representing date and hour"
+            tests:
+              - not_null
+          - name: am_or_pm
+            data_type: varchar
+            description: "AM or PM designation based on hour"
+          - name: hour_24_format
+            data_type: int
+            description: "Hour in 24-hour format"
+          - name: hour_12_format
+            data_type: int
+            description: "Hour in 12-hour format"
+          - name: am_or_pm_europe
+            data_type: varchar
+            description: "AM or PM designation in Europe/Madrid timezone"
+          - name: hour_timestamp_europe
+            data_type: timestamp
+            description: "Hour timestamp in Europe/Madrid timezone"
+          - name: hour_timestamp_america
+            data_type: timestamp
+            description: "Hour timestamp in America/New_York timezone"
+          - name: am_or_pm_america
+            data_type: varchar
+            description: "AM or PM designation in America/New_York timezone"
+
+      - name: dim_users
+        description: "Combined User Data"
+        columns:
+          - name: user_id
+            data_type: varchar
+            description: "User identifier"
+            tests:
+              - not_null
+              - unique
+          - name: first_name
+            data_type: varchar
+            description: "First name of the user"
+          - name: last_name
+            data_type: varchar
+            description: "Last name of the user"
+          - name: address_id
+            data_type: varchar
+            description: "ID of the user's address"
+          - name: email
+            data_type: varchar
+            description: "Email address of the user"
+          - name: phone_number
+            data_type: varchar
+            description: "Phone number of the user"
+          - name: created_date_utc
+            data_type: date
+            description: "Date when the user was created"
+          - name: created_time_utc
+            data_type: time
+            description: "Time when the user was created"
+          - name: updated_at_date
+            data_type: date
+            description: "Date when the user was last updated"
+          - name: updated_at_time
+            data_type: time
+            description: "Time when the user was last updated"
+
+      - name: fact_budget
+        description: "Combined budget data"
+        columns:
+          - name: budget_id
+            description: "Represent the ID for budget fact"
+            tests:
+              - not_null
+              - unique
+          - name: product_id
+            description: "Represent the ID for products dimension"
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('dim_product')
+                  field: product_id
+          - name: quantity
+            description: "Products quantity"
+            tests:
+              - positive_values
+          - name: month_date
+            description: "Month date"
+            tests:
+              - not_null
+          - name: month_day
+            description: "Month day"
+            tests:
+              - not_null
+          - name: date_load_utc
+            description: "Indicates the time and date of the data update."
+            tests:
+              - not_null
+              
+
+      - name: fact_events
+        description: "Combined events data"
+        columns:
+          - name: event_id
+            data_type: varchar
+            description: "Represent the ID for event datas"
+            tests:
+              - unique
+              - not_null
+          - name: event_type_id
+            data_type: varchar
+            description: "Represent the ID for event type dimension"
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('dim_event_type')
+                  field: event_type_id
+          - name: user_id
+            data_type: varchar
+            description: "User who made the event "
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('dim_user')
+                  field: user_id
+          - name: session_id
+            data_type: varchar
+            description: "Session in which the event takes place"
+            tests:
+              - not_null
+          - name: order_id
+            data_type: varchar
+            description: "Order identifier for our event"
+          - name: product_id
+            data_type: varchar
+            description: "Order identifier for our event"
+            tests:
+              - relationships:
+                  to: ref('dim_products')
+                  field: product_id
+          - name: created_date_utc
+            description: "Date type day-month-year "
+            tests:
+              - relationships:
+                  to: ref('dim_date')
+                  field: date
+          - name: created_time_utc
+            description: "Date type hour forma American/Europe"
+
+      - name: fact_sales
+        description: "Sales data"
+        columns:
+          - name: order_items_id
+            data_type: varchar
+            description: "Unique identifier of the order with a specific product"
+          - name: order_id
+            data_type: varchar
+            description: "Identifier of the general order for a given product"
+            tests:
+              - not_null
+          - name: user_id 
+            data_type: varchar
+            description: "Unique identifier of the user placing this order"
+          - name: address_id
+            data_type: varchar
+            description: "Address identifier for this specific order"
+            tests:
+              - relationships:
+                  to: ref('dim_addresses')
+                  field: address_id
+          - name: created_date_utc
+            description: "Date type day-month-year on which the order was created"
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('dim_date')
+                  field: date
+          - name: created_time_utc
+            description: "Date of time type when the order was created with American/European time stamp"
+          - name: product_id
+            data_type: varchar
+            description: "Unique identifier for a product type"
+            tests:
+              - relationships:
+                  to: ref('dim_products')
+                  field: product_id
+          - name: quantity_products
+            data_type: number
+            description: "Quantity of a product within a specific order"
+            tests:
+              - not_null
+              - positive_values
+          - name: total_quantity_order_item
+            data_type: number
+            description: "Total quantity of a product within a specified order item"
+            tests:
+              - not_null
+              - positive_values
+          - name: price_unit_product_usd
+            description: "Value of the product in unit form"
+            tests:
+              - not_null
+              - positive_values
+          - name: price_total_order_item_usd
+            description: "Total value of the product within our order item"
+            tests:
+              - not_null
+              - positive_values
+          - name: shipping_service_id
+            data_type: varchar
+            description: "Identifier of the company sending the order"
+            tests:
+              - relationships:
+                  to: ref('dim_shipping_service')
+                  field: shipping_service_id
+          - name: shipping_cost_item_usd
+            data_type: varchar
+            description: "Shipping cost for this product in proportion to the quantity of product in the order item"
+            tests:
+              - not_null
+              - positive_values
+          - name: promo_id
+            data_type: varchar
+            description: "Identifier of the promotion that applies to the order"
+            tests:
+              - relationships:
+                  to: ref('dim_promos')
+                  field: promo_id
+          - name: status_id
+            data_type: varchar
+            description: "Identifier of the state in which the order is located"
+            tests:
+              - relationships:
+                  to: ref('dim_status')
+                  field: status_id
+          - name: estimated_delivery_date_utc
+            description: "Date type day-month-year on which the order is expected to arrive"
+            tests:
+              - relationships:
+                  to: ref('dim_date')
+                  field: date
+          - name: estimated_delivery_at_time_utc
+            description: "Date of time type when the order was created with American/European time stamp"
+          - name: delivered_date_utc
+            description: "date type day-month-year on which the order arrives"
+            tests:
+              - relationships:
+                  to: ref('dim_date')
+                  field: date
+          - name: delivered_time_utc
+            description: "Date of time type when the order was created with American/European time stamp"
+          - name: tracking_id
+            data_type: varchar
+            description: "Tracking identifier for our order"
+            tests:
+                - not_null
+          - name: date_load_utc
+            data_type: timestamp_tz
+            description: ""

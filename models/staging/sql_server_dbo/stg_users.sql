@@ -1,7 +1,7 @@
-
 {{
   config(
-    materialized='view'
+    materialized='incremental' , 
+    unique_key='user_id'
   )
 }}
 
@@ -12,20 +12,23 @@ WITH src_users AS (
 
 stg_users AS (
     SELECT
-        cast (user_id as STRING) as user_id,
-
-        cast (address_id as STRING) as address_id ,
+        cast (user_id as VARCHAR (128)) as user_id,
+        cast (address_id as VARCHAR (128)) as address_id ,
         cast (first_name as VARCHAR (50)) as first_name,
         cast (last_name as VARCHAR (50)) as last_name ,
-        cast (replace (phone_number,'-','') as NUMBER) as phone_number ,  
-        cast (email as VARCHAR (200)) as email ,
-        to_date(created_at) as created_at_date ,
-        to_time(created_at) as created_at_time,
+        cast (replace (phone_number,'-','') as VARCHAR (50)) as phone_number ,  
+        cast (email as VARCHAR (128)) as email ,
+        to_date(created_at) as created_date_utc ,
+        to_time(created_at) as created_time_utc,
         to_date(updated_at) as updated_at_date ,
         to_time(updated_at) as updated_at_time,
-        cast (total_orders as STRING) as total_orders , -- HAY QUE COMPROBAR PORQUÉ ES NULL 
         cast (_fivetran_synced as timestamp_ntz(9)) as date_load_utc
     FROM src_users
+    {% if is_incremental()%}
+    where _fivetran_synced > (select max (date_load_utc) from {{this}})
+    {%endif%}
     )
 
-SELECT * FROM stg_users
+SELECT 
+*
+FROM stg_users

@@ -1,20 +1,14 @@
 {{
-  config(
-    materialized='table'
-  )
+    config(
+        materialized='table'
+    )
 }}
 
-WITH dim_promos AS (
-    SELECT * 
-    FROM {{ ref('stg_promos') }}
-    ),
+WITH stg_promos AS
+(
+    SELECT *
+    FROM {{ ref ('stg_promos')}}
+)
 
-dim_promos_casted AS (
-    SELECT
-        promo_id ,
-        promo_type ,
-        promo_status 
-    FROM dim_promos
-    )
-
-SELECT * FROM dim_promos_casted
+SELECT *
+FROM stg_promos

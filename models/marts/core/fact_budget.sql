@@ -4,13 +4,13 @@
     )
 }}
 
-WITH fact_sales_snapshot AS
+WITH dim_budget_snapshot AS
 (
     SELECT *
-    FROM {{ ref ('fact_sales_snapshot')}}
+    FROM {{ ref ('fact_budget_snapshot')}}
 )
 
 SELECT 
 *
-FROM fact_sales_snapshot
+FROM dim_budget_snapshot
 where dbt_valid_to is null

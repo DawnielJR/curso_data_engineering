@@ -1,22 +1,26 @@
 {{
-  config(
-    materialized='table'
-  )
+    config(
+        materialized='table'
+    )
 }}
 
-WITH dim_users AS (
-    SELECT * 
-    FROM {{ ref('stg_users') }}
-    ),
+WITH dim_users_snapshot AS
+(
+    SELECT *
+    FROM {{ ref ('dim_users_snapshot')}}
+)
 
-dim_users_casted AS (
-    SELECT
-        user_id ,
-        address_id ,
-        CONCAT(first_name, ' ', last_name) as full_name , 
-        phone_number ,  
-        email 
-    FROM dim_users
-    )
-
-SELECT * FROM dim_users_casted
+SELECT 
+    user_id ,
+    first_name ,
+    last_name ,
+    address_id ,
+    email ,
+    phone_number ,
+    created_date_utc ,
+    created_time_utc ,
+    updated_at_date ,
+    updated_at_time
+FROM dim_users_snapshot
+where dbt_valid_to is null
+ 
