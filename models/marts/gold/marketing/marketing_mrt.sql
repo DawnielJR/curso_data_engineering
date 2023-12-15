@@ -6,12 +6,12 @@
 
 WITH mrt_order_products_state AS (
     SELECT * 
-    FROM {{ ref('stg_orders') }}
+    FROM {{ ref('fact_sales') }}
 ),
 
 mrt_address_products_state AS (
     SELECT *
-    FROM {{ ref ('stg_addresses') }}
+    FROM {{ ref ('dim_addresses') }}
 )
 
 SELECT

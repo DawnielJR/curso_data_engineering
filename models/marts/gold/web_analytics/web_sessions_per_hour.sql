@@ -9,6 +9,6 @@ FROM (
     SELECT 
         DATE_TRUNC('hour', created_time_utc) as hours,
         COUNT(distinct session_id) as unique_session 
-    FROM {{ ref('stg_events') }}
+    FROM {{ ref('fact_events') }}
     GROUP BY 1
 )subquery

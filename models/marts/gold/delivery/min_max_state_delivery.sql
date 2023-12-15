@@ -6,7 +6,7 @@
 
 WITH stg_orders AS (
     SELECT * 
-    FROM {{ ref('stg_orders') }}
+    FROM {{ ref('fact_sales') }}
     ),
 
 stg_orders_data AS (
